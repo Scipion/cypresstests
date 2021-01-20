@@ -7,6 +7,7 @@ node_js:
 # if using Ubuntu 16 need this library
 # https://github.com/cypress-io/cypress-documentation/pull/1647
 addons:
+  chrome: stable
   apt:
     packages:
     - libgconf-2-4
@@ -21,12 +22,14 @@ cache:
     - npm run cy:verify
     - npm run cy:info
 
-defaults: &defaults
-  script:
-    #   ## print all Travis environment variables for debugging
-    - $(npm bin)/print-env TRAVIS
-    #- npm run start:ci &
-    - npm run cy:run -- --record --parallel
-    # after all tests finish running we need
-    # to kill all background jobs (like "npm start &")
-    - kill $(jobs -p) || true
+install:
+  - npm ci
+
+script:
+  #   ## print all Travis environment variables for debugging
+  - $(npm bin)/print-env TRAVIS
+  #- npm run start:ci &
+  - npm run cy:run -- --record --parallel
+  # after all tests finish running we need
+  # to kill all background jobs (like "npm start &")
+  - kill $(jobs -p) || true
